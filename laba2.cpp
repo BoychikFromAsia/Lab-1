@@ -1,100 +1,122 @@
 ﻿#include <iostream>
 
-int amount, i, input, min, k = 2, g, k1, k2, k3, max, a, b, divv, c;
-float arif, sum;
+using namespace std;
+int amount, matter, i, j, divv, divv1, divv2, divv3, input, maxx, minn, a, b, c;
+float summ, avg;
 int main(int argc, char* argv[])
 {
 	bool isHuman = false;
 	if (argc <= 1 || strcmp(argv[1], "false") != 0)
-		isHuman = true;
-	if (isHuman) {
-		setlocale(LC_ALL, "");
-		std::wcout << L"Введите количетсво чиесел последовательности: ";
-	}
-	std::cin >> amount;
-	for (i = 0;i < amount;i++)
 	{
-		if (i != amount)
+		isHuman = true;
+	}
+	if (isHuman)
+	{
+		setlocale(LC_ALL, "");
+		cout << "Введите количество чисел последовательности:" << endl;
+	}
+	cin >> amount;
+	for (matter = 0; matter < amount; matter++)
+	{
+		if (isHuman)
+		{
+			cout << "Число "  << matter + 1 <<": " << endl;
+		}
+		cin >> input;
+		if (matter == 0)
+		{
+			minn = input;
+		}
+		divv = 0;
+		if (input % 2 != 0)
+		{
+			int sqr = sqrt(input);
+			for (j = 3; j <= sqr; j += 2)
+			{
+				if (input % j == 0)
+				{
+					divv++;
+					break;
+				}
+			}
+		}
+		else
+		{
+			divv++;
+		}
+		if (divv == 0 and input != 1 or input == 2)
 		{
 			if (isHuman)
 			{
-				std::wcout << i + 1 << L" Число " << ": ";
+				cout << input << " - простое число" <<endl;
+			}
+			else
+			{
+				cout << input << endl;
 			}
 		}
-		std::cin >> input;
-		if (input == 1)
-			std::wcout << 1 << L" Число  не простое" << std::endl;
-		else
+		summ += input;
+		if (minn > input)
 		{
-			while (input % k != 0)
-				k++;
-			if (input == k)
-				std::wcout << input << L" - число простое " << std::endl;
-			else
-				std::wcout << input << L" - число не простое " << std::endl;
+			minn = input;
 		}
-		if (i == 0) {
-			min = input;
-		}
-		sum += input;
-		if (min > input)
+		if (maxx < input)
 		{
-			min = input;
-		}
-		if (max < input)
-		{
-			max = input;
+			maxx = input;
 		}
 		if (input % 5 == 0)
 		{
-			k1 += 1;
+			divv1 += 1;
 		}
-		divv = input;
-		while (divv % 2 == 0)
+		i = input;
+		while (i % 2 == 0)
 		{
-			divv = divv / 2;
+			i = i / 2;
 		}
-		if (divv == 1)
+		if (i == 1)
 		{
-			k2 += 1;
+			divv2 += 1;
 		}
 		a = b;
 		b = c;
 		c = input;
-		if (g >= 2)
+		if (matter >= 2)
 		{
 			if ((a + b) < c)
 			{
-				k3++;
+				divv3++;
 			}
 		}
 	}
 	if (isHuman)
 	{
-		std::wcout << L"Среднее арифметическое введенных чисел:" << std::endl;
+		cout << "Cреднее арифметическое введенных чисел (с округленное до двух знаков после запятой):" << endl;
 	}
-	arif = round((sum / amount) * 100) / 100;
-	std::cout << arif << std::endl;
+	avg = round((summ / amount) * 100) / 100;
+	cout << avg << endl;
 	if (isHuman)
 	{
-		std::wcout << L"Разница между максимумом и минимумом:" << std::endl;
+		cout << "Разница между максимумом и минимумом : " << endl;
 	}
-	std::wcout << max - min << std::endl;
+	cout << maxx - minn <<endl;
 	if (isHuman)
 	{
-		std::wcout << L"Количество чисел, кратных числу 5:" << std::endl;
+		cout << "Количество чисел, кратных числу 5:" << endl;
 	}
-	std::wcout << k1 << std::endl;
+	cout << divv1 << endl;
 	if (isHuman)
 	{
-		std::wcout << L"Количество чисел, являющихся степенью двойки:" << std::endl;
+		cout << "Количество чисел, являющихся степенью двойки:" <<endl;
 	}
-	std::wcout << k2 << std::endl;
-
+	cout << divv2 << endl;
 	if (isHuman)
 	{
-		std::wcout << L"Количество чисел, превышающих сумму двух предшествующих членов последовательности:" << std::endl;
+		cout << "Количество чисел, превышающих сумму двух предшествующих членов последовательности:" << endl;
 	}
-	std::wcout << k3 << std::endl;
+	cout << divv3 << endl;
+	if (isHuman)
+	{
+		system("pause");
+	}
 	return 0;
 }
