@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <iomanip>
-using namespace std;
 
+using namespace std;
 void inputMatrix(double** matrix, int n, int m) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
@@ -12,7 +12,7 @@ void inputMatrix(double** matrix, int n, int m) {
 void printMatrix(double** matrix, int n, int m) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
-            cout << fixed << setprecision(2) << matrix[i][j] << (j < m - 1 ? " " : "");
+            cout << fixed << setprecision(0) << matrix[i][j] << (j < m - 1 ? " " : "");
         }
         cout << endl;
     }
@@ -30,7 +30,7 @@ void multiplyMatrix(double** A1, double** A2, double** result, int N, int M, int
 void matrixPower(double** A, double** result, int x, int n) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
-            result[i][j] = (i == j) ? 1 : 0; 
+            result[i][j] = (i == j) ? 1 : 0;
         }
     }
     double** base = new double* [n];
@@ -122,7 +122,7 @@ int main(int argc, const char* argv[]) {
             if (isHuman)
                 cout << "Введите элементы матрицы A2 размером " << M << " x " << K << " построчно:\n";
             inputMatrix(A2, M, K);
-            if (M != M) { 
+            if (N != K) {
                 if (isHuman)
                     cout << "Невозможно произвести операцию" << endl;
                 else
@@ -138,6 +138,7 @@ int main(int argc, const char* argv[]) {
                 for (int i = 0; i < N; ++i) {
                     for (int j = 0; j < K; ++j) {
                         A1[i][j] = result[i][j];
+                        M = K;
                     }
                 }
                 // Освобождение памяти
@@ -153,11 +154,6 @@ int main(int argc, const char* argv[]) {
             delete[] A2;
         }
         else if (command == 3) {
-            int x;
-            if (isHuman)
-                cout << "Введите натуральное число x: ";
-            cin >> x;
-
             if (N != M) {
                 if (isHuman)
                     cout << "Невозможно произвести операцию" << endl;
@@ -165,6 +161,10 @@ int main(int argc, const char* argv[]) {
                     cout << "NO" << endl;
             }
             else {
+                int x;
+                if (isHuman)
+                    cout << "Введите натуральное число x: ";
+                cin >> x;
                 // Результирующая матрица
                 double** result = new double* [N];
                 for (int i = 0; i < N; ++i) {
