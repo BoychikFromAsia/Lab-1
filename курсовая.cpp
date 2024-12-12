@@ -19,7 +19,7 @@ void deleteMatrix(double** matrix, int size) {
 }
 // Функция для ввода матрицы с консоли
 void inputMatrix(double** matrix, int size) {
-    cout << "Введите элементы матрицы " << endl;
+    cout << "Введите элементы матрицы: " << endl;
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             cin >> matrix[i][j];
@@ -67,12 +67,11 @@ void writeMatrixToFile(double** matrix, int size, const string& filename) {
 }
 // Функция для копирования элементов из матрицы A в матрицу C
 void copyMatchingElements(double** A, double** B, double** C, int size) {
-    // Инициализируем элементы матрицы C нулями
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
+    // Инициализация элементов матрицы C нулями
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
             C[i][j] = 0;
-        }
-    }
+
     for (int i = 0; i < size; i++) {
         double diagonalElement = B[i][i]; // Диагональный элемент матрицы B
         for (int j = 0; j < size; j++) {
@@ -84,12 +83,10 @@ void copyMatchingElements(double** A, double** B, double** C, int size) {
 }
 // Функция для интерактивного редактирования элементов матрицы
 void editMatrix(double** matrix, int size) {
-    int row, col;
-    double newValue;
     char choice;
-    cout << "Вы хотите изменить элемент матрицы? (y/n): ";
-    cin >> choice;
-    while (choice == 'y') {
+    do {
+        int row, col;
+        double newValue;
         cout << "Введите номер строки (0-" << size - 1 << ") и номер столбца (0-" << size - 1 << "): ";
         cin >> row >> col;
         if (row >= 0 && row < size && col >= 0 && col < size) {
@@ -101,47 +98,69 @@ void editMatrix(double** matrix, int size) {
         else {
             cout << "Неверный индекс!" << endl;
         }
-
         cout << "Хотите изменить еще один элемент? (y/n): ";
         cin >> choice;
-    }
+    } while (choice == 'y');
 }
+
 int main() {
     setlocale(LC_ALL, "RU");
     int size;
+
     cout << "Введите размерность квадратных матриц: ";
     cin >> size;
+
     double** A = createMatrix(size);
     double** B = createMatrix(size);
     double** C = createMatrix(size);
-    // Ввод матриц
-    inputMatrix(A, size);
-    inputMatrix(B, size);
-    // Редактирование элементов матриц
-    editMatrix(A, size);
-    editMatrix(B, size);
-    // Копирование элементов из A в C
-    copyMatchingElements(A, B, C, size);
-    // Вывод матриц
-    cout << "Матрица A:" << endl;
-    printMatrix(A, size);
-    cout << "Матрица B:" << endl;
-    printMatrix(B, size);
-    cout << "Матрица C (элементы из A, совпадающие с диагональными элементами B):" << endl;
-    printMatrix(C, size);
-    // Запись в файл
-    writeMatrixToFile(A, size, "matrixA.txt");
-    writeMatrixToFile(B, size, "matrixB.txt");
-    writeMatrixToFile(C, size, "matrixC.txt");
-    // Чтение из файла (пример)
-    double** D = createMatrix(size);
-    readMatrixFromFile(D, size, "matrixA.txt");
-    cout << "Матрица D (из файла):" << endl;
-    printMatrix(D, size);
-    // Освобождение памяти
-    deleteMatrix(A, size);
-    deleteMatrix(B, size);
-    deleteMatrix(C, size);
-    deleteMatrix(D, size);
+
+    int choice;
+    while (true) {
+        cout << "\nВыберите действие:" << endl
+            << "1. Ввод матриц" << endl
+            << "2. Вывод матриц" << endl
+            << "3. Редактировать матрицы" << endl
+            << "4. Копировать совпадающие элементы" << endl
+            << "5. Записать матрицы в файл" << endl
+            << "6. Прочитать матрицу из файла" << endl
+            << "0. Выход" << endl;
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            inputMatrix(A, size);
+            inputMatrix(B, size);
+            break;
+        case 2:
+            printMatrix(A, size);
+            printMatrix(B, size);
+            printMatrix(C, size);
+            break;
+        case 3:
+            editMatrix(A, size);
+            editMatrix(B, size);
+            break;
+        case 4:
+            copyMatchingElements(A, B, C, size);
+            break;
+        case 5:
+            writeMatrixToFile(A, size, "matrixA.txt");
+            writeMatrixToFile(B, size, "matrixB.txt");
+            writeMatrixToFile(C, size, "matrixC.txt");
+            break;
+        case 6:
+            readMatrixFromFile(A, size, "matrixA.txt");
+            cout << "Матрица A (из файла):" << endl;
+            printMatrix(A, size);
+            break;
+        case 0:
+            deleteMatrix(A, size);
+            deleteMatrix(B, size);
+            deleteMatrix(C, size);
+            return 0;
+        default:
+            cout << "Неверный выбор, попробуйте снова." << endl;
+        }
+    }
     return 0;
 }
