@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <fstream>
+#include <windows.h>
 
 using namespace std;
 // Функция для динамического выделения памяти под матрицу
@@ -19,7 +20,7 @@ void deleteMatrix(double** matrix, int size) {
 }
 // Функция для ввода матрицы с консоли
 void inputMatrix(double** matrix, int size) {
-    cout << "Введите элементы матрицы: " << endl;
+    cout << "Введите элементы матрицы " << endl;
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             cin >> matrix[i][j];
@@ -55,7 +56,6 @@ void writeMatrixToFile(double** matrix, int size, const string& filename) {
     ofstream outfile(filename);
     if (!outfile.is_open()) {
         cerr << "Ошибка открытия файла для записи!" << endl;
-        return;
     }
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
@@ -67,11 +67,6 @@ void writeMatrixToFile(double** matrix, int size, const string& filename) {
 }
 // Функция для копирования элементов из матрицы A в матрицу C
 void copyMatchingElements(double** A, double** B, double** C, int size) {
-    // Инициализация элементов матрицы C нулями
-    for (int i = 0; i < size; i++)
-        for (int j = 0; j < size; j++)
-            C[i][j] = 0;
-
     for (int i = 0; i < size; i++) {
         double diagonalElement = B[i][i]; // Диагональный элемент матрицы B
         for (int j = 0; j < size; j++) {
@@ -83,10 +78,12 @@ void copyMatchingElements(double** A, double** B, double** C, int size) {
 }
 // Функция для интерактивного редактирования элементов матрицы
 void editMatrix(double** matrix, int size) {
+    int row, col;
+    double newValue;
     char choice;
-    do {
-        int row, col;
-        double newValue;
+    cout << "Вы хотите изменить элемент матрицы? (y/n): ";
+    cin >> choice;
+    while (choice == 'y') {
         cout << "Введите номер строки (0-" << size - 1 << ") и номер столбца (0-" << size - 1 << "): ";
         cin >> row >> col;
         if (row >= 0 && row < size && col >= 0 && col < size) {
@@ -100,22 +97,27 @@ void editMatrix(double** matrix, int size) {
         }
         cout << "Хотите изменить еще один элемент? (y/n): ";
         cin >> choice;
-    } while (choice == 'y');
+    }
 }
-
-int main() {
+int main() 
+{
+    SetConsoleOutputCP(1251);
+    SetConsoleCP(1251);
     setlocale(LC_ALL, "RU");
     int size;
-
+    int choice;
     cout << "Введите размерность квадратных матриц: ";
     cin >> size;
-
-    double** A = createMatrix(size);
-    double** B = createMatrix(size);
-    double** C = createMatrix(size);
-
-    int choice;
-    while (true) {
+    // Динамическое выделение памяти для матриц
+    double** A = new double* [size];
+    double** B = new double* [size];
+    double** C = new double* [size];
+    for (int i = 0; i < size; i++) {
+        A[i] = new double[size];
+        B[i] = new double[size];
+        C[i] = new double[size];
+    }
+    do {
         cout << "\nВыберите действие:" << endl
             << "1. Ввод матриц" << endl
             << "2. Вывод матриц" << endl
@@ -125,11 +127,11 @@ int main() {
             << "6. Прочитать матрицу из файла" << endl
             << "0. Выход" << endl;
         cin >> choice;
-
         switch (choice) {
         case 1:
             inputMatrix(A, size);
             inputMatrix(B, size);
+            inputMatrix(C, size);
             break;
         case 2:
             printMatrix(A, size);
@@ -139,6 +141,7 @@ int main() {
         case 3:
             editMatrix(A, size);
             editMatrix(B, size);
+            editMatrix(C, size);
             break;
         case 4:
             copyMatchingElements(A, B, C, size);
@@ -152,15 +155,25 @@ int main() {
             readMatrixFromFile(A, size, "matrixA.txt");
             cout << "Матрица A (из файла):" << endl;
             printMatrix(A, size);
+            readMatrixFromFile(B, size, "matrixB.txt");
+            cout << "Матрица B (из файла):" << endl;
+            printMatrix(B, size);
+            readMatrixFromFile(C, size, "matrixC.txt");
+            cout << "Матрица C (из файла):" << endl;
+            printMatrix(C, size);
             break;
         case 0:
             deleteMatrix(A, size);
             deleteMatrix(B, size);
             deleteMatrix(C, size);
-            return 0;
-        default:
-            cout << "Неверный выбор, попробуйте снова." << endl;
+            break;
         }
-    }
-    return 0;
-}
+        }while (choice != 0);
+
+        deleteMatrix(A, size);
+        deleteMatrix(B, size);
+        deleteMatrix(C, size);
+        SetConsoleOutputCP(866);
+        SetConsoleCP(866);
+        return 0;
+ }
