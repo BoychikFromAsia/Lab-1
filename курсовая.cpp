@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <windows.h>
+#include <string>
 
 using namespace std;
 // Функция для динамического выделения памяти под матрицу
@@ -67,17 +68,22 @@ void writeMatrixToFile(double** matrix, int size, const string& filename) {
 }
 // Функция для копирования элементов из матрицы A в матрицу C
 void copyMatchingElements(double** A, double** B, double** C, int size) {
+    // Теперь копируем подходящие элементы
     for (int i = 0; i < size; i++) {
-        double diagonalElement = B[i][i]; // Диагональный элемент матрицы B
+        double diagonalElement = B[i][i]; // Получаем диагональный элемент матрицы B
         for (int j = 0; j < size; j++) {
-            if (A[i][j] == diagonalElement) {
-                C[i][j] = A[i][j]; // Копируем элемент из A в C
+            for (int k = 0; k < size; k++) {
+                // Проверяем элемент A на совпадение с диагональным элементом B
+                if (A[j][k] == diagonalElement) {
+                    C[j][k] = A[j][k]; // Копируем элемент из A в C
+                }
             }
         }
     }
 }
 // Функция для интерактивного редактирования элементов матрицы
-void editMatrix(double** matrix, int size) {
+void editMatrix(double** matrix, int size, const string& matrixName) {
+    cout << "Вы редактируете матрицу: " << matrixName << endl;
     int row, col;
     double newValue;
     char choice;
@@ -99,7 +105,7 @@ void editMatrix(double** matrix, int size) {
         cin >> choice;
     }
 }
-int main() 
+int main()
 {
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
@@ -139,9 +145,9 @@ int main()
             printMatrix(C, size);
             break;
         case 3:
-            editMatrix(A, size);
-            editMatrix(B, size);
-            editMatrix(C, size);
+            editMatrix(A, size, "Матрица A");
+            editMatrix(B, size, "Матрица B");
+            editMatrix(C, size, "Матрица C");
             break;
         case 4:
             copyMatchingElements(A, B, C, size);
@@ -168,12 +174,6 @@ int main()
             deleteMatrix(C, size);
             break;
         }
-        }while (choice != 0);
-
-        deleteMatrix(A, size);
-        deleteMatrix(B, size);
-        deleteMatrix(C, size);
-        SetConsoleOutputCP(866);
-        SetConsoleCP(866);
-        return 0;
- }
+    } while (choice != 0);
+    return 0;
+}
