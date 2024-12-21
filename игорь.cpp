@@ -33,7 +33,7 @@ void matrixPower(int** A, int** result, int x, int n) {
 			result[i][j] = (i == j) ? 1 : 0;
 		}
 	}
-	int** base = new int*[n];
+	int** base = new int* [n];
 	for (int i = 0; i < n; ++i) {
 		base[i] = new int[n];
 		for (int j = 0; j < n; ++j) {
@@ -42,7 +42,7 @@ void matrixPower(int** A, int** result, int x, int n) {
 	}
 	while (x > 0) {
 		if (x % 2 == 1) {
-			int** temp1 = new int*[n];
+			int** temp1 = new int* [n];
 			for (int i = 0; i < n; ++i) {
 				temp1[i] = new int[n];
 			}
@@ -55,8 +55,9 @@ void matrixPower(int** A, int** result, int x, int n) {
 			for (int i = 0; i < n; ++i) {
 				delete[] temp1[i];
 			}
+			delete[] temp1;
 		}
-		int** temp2 = new int*[n];
+		int** temp2 = new int* [n];
 		for (int i = 0; i < n; ++i) {
 			temp2[i] = new int[n];
 		}
@@ -69,11 +70,13 @@ void matrixPower(int** A, int** result, int x, int n) {
 		for (int i = 0; i < n; ++i) {
 			delete[] temp2[i];
 		}
+		delete[] temp2;
 		x /= 2;
 	}
 	for (int i = 0; i < n; ++i) {
 		delete[] base[i];
 	}
+	delete[] base;
 }
 int main(int argc, const char* argv[]) {
 	setlocale(LC_ALL, "RU");
@@ -86,7 +89,7 @@ int main(int argc, const char* argv[]) {
 		cout << "Введите M: ";
 	cin >> M;
 	// Выделяение памяти для матрицы A1
-	int** A1 = new int*[N];
+	int** A1 = new int* [N];
 	for (int i = 0; i < N; ++i) {
 		A1[i] = new int[M];
 	}
@@ -111,7 +114,7 @@ int main(int argc, const char* argv[]) {
 				cout << "Введите K: ";
 			cin >> K;
 			// Выделение памяти для матрицы А2
-			int** A2 = new int*[M];
+			int** A2 = new int* [M];
 			for (int i = 0; i < M; ++i) {
 				A2[i] = new int[K];
 			}
@@ -126,7 +129,7 @@ int main(int argc, const char* argv[]) {
 			}
 			else {
 				// Результирующая матрица
-				int** result = new int*[N];
+				int** result = new int* [N];
 				for (int i = 0; i < N; ++i) {
 					result[i] = new int[K];
 				}
@@ -141,11 +144,13 @@ int main(int argc, const char* argv[]) {
 				for (int i = 0; i < N; ++i) {
 					delete[] result[i];
 				}
+				delete[] result;
 			}
 			// Освобождение памяти
 			for (int i = 0; i < M; ++i) {
 				delete[] A2[i];
 			}
+			delete[] A2;
 		}
 		else if (command == 3) {
 			if (N != M) {
@@ -160,7 +165,7 @@ int main(int argc, const char* argv[]) {
 					cout << "Введите натуральное число x: ";
 				cin >> x;
 				// Результирующая матрица
-				int** result = new int*[N];
+				int** result = new int* [N];
 				for (int i = 0; i < N; ++i) {
 					result[i] = new int[N];
 				}
@@ -174,6 +179,7 @@ int main(int argc, const char* argv[]) {
 				for (int i = 0; i < N; ++i) {
 					delete[] result[i];
 				}
+				delete[] result;
 			}
 		}
 		else {
@@ -185,5 +191,6 @@ int main(int argc, const char* argv[]) {
 	for (int i = 0; i < N; ++i) {
 		delete[] A1[i];
 	}
+	delete[] A1;
 	return 0;
 }
