@@ -2,7 +2,7 @@
 #include <iomanip>
 
 using namespace std;
-void deleteMatrix(double** matrix, int size) {
+void deleteMatrix(int** matrix, int size) {
 	for (int i = 0; i < size; i++) {
 		delete[] matrix[i];
 	}
