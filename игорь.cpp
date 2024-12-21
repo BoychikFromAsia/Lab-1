@@ -2,6 +2,12 @@
 #include <iomanip>
 
 using namespace std;
+void deleteMatrix(double** matrix, int size) {
+	for (int i = 0; i < size; i++) {
+		delete[] matrix[i];
+	}
+	delete[] matrix;
+}
 void inputMatrix(int** matrix, int n, int m) {
 	for (int i = 0; i < n; ++i) {
 		for (int j = 0; j < m; ++j) {
@@ -52,10 +58,7 @@ void matrixPower(int** A, int** result, int x, int n) {
 					result[i][j] = temp1[i][j];
 				}
 			}
-			for (int i = 0; i < n; ++i) {
-				delete[] temp1[i];
-			}
-			delete[] temp1;
+			deleteMatrix(temp1,n)
 		}
 		int** temp2 = new int* [n];
 		for (int i = 0; i < n; ++i) {
@@ -67,17 +70,10 @@ void matrixPower(int** A, int** result, int x, int n) {
 				base[i][j] = temp2[i][j];
 			}
 		}
-		for (int i = 0; i < n; ++i) {
-			delete[] temp2[i];
-		}
-		delete[] temp2;
+		deleteMatrix(temp2, n)
 		x /= 2;
 	}
-	for (int i = 0; i < n; ++i) {
-		delete[] base[i];
-	}
-	delete[] base;
-}
+	deleteMatrix(base, n)
 int main(int argc, const char* argv[]) {
 	setlocale(LC_ALL, "RU");
 	bool isHuman = (argc <= 1 || strcmp(argv[1], "false") != 0);
@@ -141,17 +137,9 @@ int main(int argc, const char* argv[]) {
 					}
 				}
 				// Освобождение памяти
-				for (int i = 0; i < N; ++i) {
-					delete[] result[i];
-				}
-				delete[] result;
-			}
+				deleteMatrix(result, N);
 			// Освобождение памяти
-			for (int i = 0; i < M; ++i) {
-				delete[] A2[i];
-			}
-			delete[] A2;
-		}
+				deleteMatrix(A2, M);
 		else if (command == 3) {
 			if (N != M) {
 				if (isHuman)
@@ -176,11 +164,7 @@ int main(int argc, const char* argv[]) {
 					}
 				}
 				// Освобождение памяти
-				for (int i = 0; i < N; ++i) {
-					delete[] result[i];
-				}
-				delete[] result;
-			}
+				deleteMatrix(result, N);
 		}
 		else {
 			if (isHuman)
@@ -188,9 +172,6 @@ int main(int argc, const char* argv[]) {
 		}
 	}
 	// Освобождение памяти матрицы А1
-	for (int i = 0; i < N; ++i) {
-		delete[] A1[i];
-	}
-	delete[] A1;
+	deleteMatrix(A1, N);	
 	return 0;
 }
